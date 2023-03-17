@@ -1,34 +1,65 @@
-from tkinter import*
-import time
-import winsound
+import string
+import time 
+import datetime
 
-#  Titre et taille de la police
-app_horloge = Tk()
-app_horloge.title("horloge")
-app_horloge.geometry("420x150")
-app_horloge.resizable(1,1)
+def afficher_heure(mode_24h=True):
 
-# Police de l'heure et ses couleurs
-text_font = ("Boulder",50,'bold')
-background = "Blue"
-foreground = "#363529"
-border_widht = 20
-# combinaison de toutes les éléments pour définir le label de nos éléments
-label = Label(app_horloge, font=text_font, bg=background, fg=foreground, bd=border_widht)
-label.grid(row=0, column=1)
+    while True:
 
-# Définition de la fonction principale de l'horloge
-def horloge():
-    temps = time.strftime("%H:%M:%S")
-    label.config(text=temps)
-    label.after(200, horloge)
-
-    if "%H" == 18:
-        if "%M" == 29:
-            if "%S" == 10:
-                time.strftime("bip bip bip")
-
-horloge()
-app_horloge.mainloop()
+        heure_actuelle = time.localtime()[3:6]
+        
+        if not mode_24h:
+            heures = heure_actuelle[0] % 12 or 12  
+            minutes = heure_actuelle[1]
+            secondes = heure_actuelle[2]
+            am_pm = "AM" if heure_actuelle[0] < 12 else "PM"
+            heure_formattee = f"{heures:02}:{minutes:02}:{secondes:02} {am_pm}"
+        else:
+            heure_formattee = time.strftime("%H:%M:%S", heure_actuelle)
+        
+      
+        date = time.localtime()[:3]
+        mois = [date[1]]
+        date_formattee = f"{date[2]} {mois} {date[0]}"
+    
 
 
+
+
+tuples = (14, 44, 30)
+
+def afficher_heures (tuples):
+
+    heures_listes = list(tuples)
+
+     
+    while True :
+
+        heures_listes[2] += 1
+        time.sleep(1)
+        print(heures_listes)
+
+        if heures_listes [2] == 60:
+            heures_listes [2] = 0
+            heures_listes[1] += 1
+
+        if  heures_listes [1] == 60:
+                heures_listes [1] = 0
+                heures_listes[0] += 1
+
+        if  heures_listes [0] == 24:
+                heures_listes [0] = 0
+
+
+        break
+
+def regler_alarme(alarme):
+
+    while True:
+
+        heure_actuelle = time.localtime()[3:6]  
+        if heure_actuelle == alarme:
+            print("ALARME SONNE :", alarme)
+            break
+                                            
+afficher_heures (tuples)
