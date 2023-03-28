@@ -1,65 +1,63 @@
-import string
-import time 
-import datetime
+import time
 
-def afficher_heure(mode_24h=True):
+mode_12h = False  
+pause = False  
+alarme = None  
 
-    while True:
+def afficher_heure(heure):
 
-        heure_actuelle = time.localtime()[3:6]
-        
-        if not mode_24h:
-            heures = heure_actuelle[0] % 12 or 12  
-            minutes = heure_actuelle[1]
-            secondes = heure_actuelle[2]
-            am_pm = "AM" if heure_actuelle[0] < 12 else "PM"
-            heure_formattee = f"{heures:02}:{minutes:02}:{secondes:02} {am_pm}"
-        else:
-            heure_formattee = time.strftime("%H:%M:%S", heure_actuelle)
-        
-      
-        date = time.localtime()[:3]
-        mois = [date[1]]
-        date_formattee = f"{date[2]} {mois} {date[0]}"
-    
+    global mode_12h
 
+    if mode_12h:
 
+        heure12h = time.strftime("%I:%M:%S %p", heure)
 
+        print(heure12h)
 
-tuples = (14, 44, 30)
+    else:
 
-def afficher_heures (tuples):
+        heure24h = time.strftime("%H:%M:%S", heure)
 
-    heures_listes = list(tuples)
+        print(heure24h)
 
-     
-    while True :
+def regler_heure(heure):
 
-        heures_listes[2] += 1
+    global pause
+
+    pause = False
+
+    while not pause:
+
+        heure_actuelle = time.localtime()
+
+        afficher_heure(heure_actuelle)
+
+        if alarme == heure_actuelle[3:6]:
+
+            print("Alarme!")
+
         time.sleep(1)
-        print(heures_listes)
 
-        if heures_listes [2] == 60:
-            heures_listes [2] = 0
-            heures_listes[1] += 1
+def regler_alarme(heure):
 
-        if  heures_listes [1] == 60:
-                heures_listes [1] = 0
-                heures_listes[0] += 1
+    global alarme
 
-        if  heures_listes [0] == 24:
-                heures_listes [0] = 0
+    alarme = heure
 
+def changer_mode(mode):
 
-        break
+    global mode_12h
 
-def regler_alarme(alarme):
+    mode_12h = mode
 
-    while True:
+def mettre_en_pause():
 
-        heure_actuelle = time.localtime()[3:6]  
-        if heure_actuelle == alarme:
-            print("ALARME SONNE :", alarme)
-            break
-                                            
-afficher_heures (tuples)
+    global pause
+    pause = True
+
+# Exemple d'utilisation:
+regler_heure((16, 30, 0))  
+regler_alarme((17, 0, 0))  
+changer_mode(True)  
+mettre_en_pause()  
+
